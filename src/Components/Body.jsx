@@ -1,12 +1,14 @@
 import {useEffect, useState} from "react";
-import { collection, addDoc ,getDocs,deleteDoc,doc} from "firebase/firestore";
+import { collection, addDoc ,getDocs,deleteDoc,doc,query,where} from "firebase/firestore";
 import {database} from "../Utils/firbaseConfig"
 import TodoItem from "./TodoItem";
+import { useUser } from "../Utils/userContext";
 
 const Body=()=>{
     const [Todo,setTodo]=useState("");
     const [allTodo,setAllTodo]=useState([])
-
+    const {data}=useUser();
+    console.log(data)
 
     const handleAddTodo=async (e)=>{
         e.preventDefault();
@@ -14,6 +16,7 @@ const Body=()=>{
             const docRef=await addDoc(collection(database,"todos"),{
                 todo:Todo,
                 completed:false,
+                userId:data,
             })
 
             setTodo("")
@@ -24,8 +27,8 @@ const Body=()=>{
         }
     }
     const fetchPost = async () => {
-
-        const querySnapshot=await getDocs(collection(database, "todos"))
+        const todosQuery=query(collection(database,"todos"),where ("userId","==",data))
+        const querySnapshot=await getDocs(todosQuery)
         const newData = querySnapshot.docs.map((doc) => ({
             ...doc.data(),
             id:doc.id
@@ -42,8 +45,10 @@ const Body=()=>{
 
 
     useEffect(() => {
-        fetchPost()
-    }, []);
+        if(data){
+         fetchPost()
+        }
+    }, [data]);
 
 
     // console.log(allTodo)
