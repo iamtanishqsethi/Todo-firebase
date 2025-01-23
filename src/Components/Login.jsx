@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 import {auth} from "../Utils/firbaseConfig";
 import { useUser } from "../Utils/userContext";
 import { createUserWithEmailAndPassword,signInWithEmailAndPassword ,updateProfile} from "firebase/auth";
+import Header from "./Header";
 
 
 const Login=()=>{
@@ -30,9 +31,9 @@ const Login=()=>{
                     // Signed in
                     const user = userCredential.user;
                     console.log(user);
-                    const {uid} = auth.currentUser;
-                    addUser(uid);
-                    navigate('/home')
+                    // const {uid} = auth.currentUser;
+                    // addUser(uid);
+                    // navigate('/home')
                     // ...
                 })
                 .catch((error) => {
@@ -71,36 +72,41 @@ const Login=()=>{
     }
 
     return (
-        <div className={'flex flex-col items-center justify-center h-screen'}>
-            <div className={'h-[60%] w-[30%] p-6 bg-gray-200 flex flex-col '}>
-                <form>
-                    <h1 className={'text-2xl m-2'}>{isSigninForm ? ('Sign In') : ('Sign Up')}</h1>
-                    {!isSigninForm && <label className={'flex items-center justify-between'}>
-                        Enter your Name
-                        <input ref={name} type="text" placeholder={'Name'} className={'p-2 m-2'}/>
-                    </label>}
-                    <label className={'flex items-center justify-between'}>
-                        Enter your email address
-                        <input ref={email} type="email" placeholder={'Email'} className={'p-2 m-2'}/>
-                    </label>
-                    <label className={'flex items-center justify-between'}>
-                        Enter your password
-                        <input ref={password} type="password" placeholder={'Password'} className={'p-2 m-2'}/>
-                    </label>
-                    <p className={"text-red-500 font-bold py-2 "}>{errorMessage}</p>
-                    <button
-                        className={'p-2 m-2 bg-blue-700 text-white '}
-                        onClick={handleClick}
-                    >{isSigninForm ? ('Sign In') : ('Sign Up')}</button>
-                    <p
-                        className={'text-gray-700 font-bold cursor-pointer'}
-                        onClick={() => setIsSigninForm(!isSigninForm)}
-                    >{isSigninForm ? ('New User ? Sign Up') : ('Already a User ? Sign In')}</p>
+        <>
+            <Header/>
+            <div className={'flex flex-col items-center justify-center h-screen'}>
 
-                </form>
+                <div className={'h-[60%] w-[30%] p-6 bg-gray-200 flex flex-col '}>
+                    <form>
+                        <h1 className={'text-2xl m-2'}>{isSigninForm ? ('Sign In') : ('Sign Up')}</h1>
+                        {!isSigninForm && <label className={'flex items-center justify-between'}>
+                            Enter your Name
+                            <input ref={name} type="text" placeholder={'Name'} className={'p-2 m-2'}/>
+                        </label>}
+                        <label className={'flex items-center justify-between'}>
+                            Enter your email address
+                            <input ref={email} type="email" placeholder={'Email'} className={'p-2 m-2'}/>
+                        </label>
+                        <label className={'flex items-center justify-between'}>
+                            Enter your password
+                            <input ref={password} type="password" placeholder={'Password'} className={'p-2 m-2'}/>
+                        </label>
+                        <p className={"text-red-500 font-bold py-2 "}>{errorMessage}</p>
+                        <button
+                            className={'p-2 m-2 bg-blue-700 text-white '}
+                            onClick={handleClick}
+                        >{isSigninForm ? ('Sign In') : ('Sign Up')}</button>
+                        <p
+                            className={'text-gray-700 font-bold cursor-pointer'}
+                            onClick={() => setIsSigninForm(!isSigninForm)}
+                        >{isSigninForm ? ('New User ? Sign Up') : ('Already a User ? Sign In')}</p>
 
+                    </form>
+
+                </div>
             </div>
-        </div>
+        </>
+
     )
 }
 export default Login;

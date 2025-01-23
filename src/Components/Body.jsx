@@ -3,6 +3,7 @@ import { collection, addDoc ,getDocs,deleteDoc,doc,query,where} from "firebase/f
 import {database} from "../Utils/firbaseConfig"
 import TodoItem from "./TodoItem";
 import { useUser } from "../Utils/userContext";
+import Header from "./Header";
 
 const Body=()=>{
     const [Todo,setTodo]=useState("");
@@ -53,21 +54,27 @@ const Body=()=>{
 
     // console.log(allTodo)
     return(
-        <div className={'flex flex-col justify-center items-center h-screen'}>
-            <div className={'flex items-center justify-center'}>
-                <input type="text" placeholder={"enter todo "} className={'border-2 border-zinc-600 p-1'} onChange={(e) => setTodo(e.target.value)}
-                    value={Todo}
-                />
-                <button className={'bg-blue-700 p-1 m-2 text-white rounded'} onClick={handleAddTodo}>Add Todo</button>
-            </div>
+        <>
+            <Header/>
+            <div className={'flex flex-col justify-center items-center h-screen'}>
+                <div className={'flex items-center justify-center'}>
+                    <input type="text" placeholder={"enter todo "} className={'border-2 border-zinc-600 p-1'}
+                           onChange={(e) => setTodo(e.target.value)}
+                           value={Todo}
+                    />
+                    <button className={'bg-blue-700 p-1 m-2 text-white rounded'} onClick={handleAddTodo}>Add Todo
+                    </button>
+                </div>
 
-            <div className={'overflow-y-auto'}>
-                {allTodo.map((todo)=>(
-                    <TodoItem todo={todo} key={todo.id}
-                    onDelete={handleDelete}/>
-                ))}
+                <div className={'overflow-y-auto'}>
+                    {allTodo.map((todo) => (
+                        <TodoItem todo={todo} key={todo.id}
+                                  onDelete={handleDelete}/>
+                    ))}
+                </div>
             </div>
-        </div>
+        </>
+
     )
 }
 export default Body;
