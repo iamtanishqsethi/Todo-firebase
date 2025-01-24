@@ -1,20 +1,22 @@
 import { doc,updateDoc} from "firebase/firestore";
 import {database} from "../Utils/firbaseConfig";
 import {useState} from "react";
+import {useUser} from "../Utils/userContext";
 
 const TodoItem=({todo,onDelete})=>{
     const [editable,setEditable]=useState(false);
     const [todoMessage,setTodoMessage]=useState(todo.todo);
     const [completed,setCompleted]=useState(todo.completed);
+    const {data}=useUser();
 
     const handleUpdate=async ()=>{
-        await updateDoc(doc(database,'todos',todo.id),{
+        await updateDoc(doc(database,data,todo.id),{
             todo:todoMessage,
         })
         setEditable(false)
     }
     const handleCompleted=async ()=>{
-        await updateDoc(doc(database,'todos',todo.id),{
+        await updateDoc(doc(database,data,todo.id),{
             completed:!completed,
         })
         setCompleted(!completed);

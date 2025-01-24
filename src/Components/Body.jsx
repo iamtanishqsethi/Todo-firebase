@@ -14,7 +14,7 @@ const Body=()=>{
     const handleAddTodo=async (e)=>{
         e.preventDefault();
         try{
-            const docRef=await addDoc(collection(database,"todos"),{
+            await addDoc(collection(database,data),{
                 todo:Todo,
                 completed:false,
                 userId:data,
@@ -28,7 +28,7 @@ const Body=()=>{
         }
     }
     const fetchPost = async () => {
-        const todosQuery=query(collection(database,"todos"),where ("userId","==",data))
+        const todosQuery=query(collection(database,data))
         const querySnapshot=await getDocs(todosQuery)
         const newData = querySnapshot.docs.map((doc) => ({
             ...doc.data(),
@@ -39,7 +39,7 @@ const Body=()=>{
 
     }
     const handleDelete = async (id)=>{
-        await deleteDoc(doc(database,'todos',id))
+        await deleteDoc(doc(database,data,id))
         setAllTodo(prev => prev.filter(todo => todo.id !== id));
 
     }
